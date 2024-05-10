@@ -95,7 +95,7 @@ read the basics, so don't treat these reviewers as your only source of informati
 I've covered all pertinent points. Good luck, and happy studying!
 \pagebreak 
 
-\section*{4.1.1: Determinants }
+\section*{4.1: Determinants }
 \textit{This is mostly pure computation, but there are some proving and show questions later on, which are a little bit interesting. Also, spoiler, items \#10 and \#11 are foreshadowing for 
 eigenvalues. You'll see!}
 
@@ -109,10 +109,25 @@ eigenvalues. You'll see!}
 \begin{enumerate}
     \item \(\begin{bmatrix}
         1&2\\3&4
-    \end{bmatrix}\)
+    \end{bmatrix}\)\begin{solution}
+        We can just use the basic \(ad-bc\) formula for a \(2\times 2\) matrix, giving us \(4 - 6 = -2\). 
+    \end{solution}
     \item \(\begin{bmatrix}
         0&6&0\\3&99&-1\\-2&99&5
-    \end{bmatrix}\)
+    \end{bmatrix}\)\begin{solution}
+        We pick the row with the most zeros, then use the cofactor expansion.\[
+            \begin{vmatrix}
+                0&6&0\\3&99&-1\\-2&99&5
+            \end{vmatrix} = 0 \begin{vmatrix}
+                99&-1 \\ 99&5
+            \end{vmatrix} - 6 \begin{vmatrix}
+                3 & -1 \\ -2 & 5 
+            \end{vmatrix} + 0 \begin{vmatrix}
+                3 & 99 \\ -2 & 99 
+            \end{vmatrix} = -6 \,(15 + 2) = -102. 
+        \] You can notice that because of where these 99's and 0's are placed, it doesn't matter what row or column we pick; we're never going to have to multiply a 99 by something. Try it out for yourself and 
+        pick a different option!
+    \end{solution}
     \item \(\begin{bmatrix}
         0&2&0&-1&0\\
         -1&0&0&0&0\\
@@ -148,12 +163,158 @@ eigenvalues. You'll see!}
         1 & 1 & 1 \\ r & s & t \\ r^2 & s^2 & t^2
     \end{bmatrix}\)
     \item \(\begin{bmatrix}
-        1 -\lambda & 2 \\ 3 & 4-\lambda
+        1 -u & 2 \\ 3 & 4-u
     \end{bmatrix}\) 
     \item \(\begin{bmatrix}
-        1-\lambda & 1 & -1 \\ -1 & 2- \lambda & 15 \\ 1 & -18 & 3 - \lambda 
+        1-x & 1 & -1 \\ -1 & 2- x & 15 \\ 1 & -18 & 3 - x 
     \end{bmatrix}\)
+    \item For items \#6 to \#11, find all real values (or tuples of real values) of the given variable(s) that will make the determinant be equal to 0. 
+    \item Find the determinants of the three elementary ``column'' operations, that is\begin{enumerate}
+        \item Swapping two columns
+        \item Multiplying all elements in a column by \(k\)
+        \item Add a multiple of one column to another column
+    \end{enumerate}
+    \item Prove that any square matrix with a row of 0's or a column of 0's has determinant 0. 
+    \item Show that any square matrix with two equal columns or two equal rows (i.e.\ having the same values) has determinant 0. 
+    \item Prove that if the set of column vectors of a square matrix is linearly dependent, then the matrix has determinant 0. Also, prove the analogous result for row vectors. 
+    \item Let \(A\) be an \(n\times n\) matrix such that \(A A^T = I_n \). Find all possible values for \(\text{det}(A)\). 
+    \item Let \(A\) be a non-invertible \(n \times n \) matrix. Show that \(AB\) is also non-invertible, for any \(n\times n \) matrix \(B\). 
 \end{enumerate}
 
+\pagebreak
+\section*{4.2: Eigenvectors, eigenvalues, and diagonalization}
+\textit{My favorite lesson, because of course it is. This part is hard to grasp if you don't know the bigger picture, so I really recommend 
+watching 3B1B's video on it to see what eigenvectors really are, geometrically.}
+
+\begin{center}
+    \colorbox{CornflowerBlue!50}{
+        \begin{minipage}[c]{0.9\textwidth}
+            \centering
+            Determine whether or not the following vectors are eigenvectors for their corresponding matrix. If they are, give their corresponding eigenvalues. 
+        \end{minipage}
+    }\end{center}
+
+\begin{enumerate}
+    \setcounter{enumi}{18}
+    \item \(\begin{bmatrix}
+        3&0 \\ 8&-1 
+    \end{bmatrix}\) and \(\begin{bmatrix}
+        3 \\2 
+    \end{bmatrix}\).\begin{solution}
+        To check if a given vector is an eigenvector of some matrix, we simply check if it satisfies the equation \(A\vec{x} = \lambda\vec{x}\), where \(\lambda\) is 
+        some real numer (i.e.\ not a vector). Then,\[
+            \begin{bmatrix}
+                3&0 \\ 8&-1 
+            \end{bmatrix} \begin{bmatrix}
+                3 \\2 
+            \end{bmatrix} = \begin{bmatrix}
+                9 \\ 22
+            \end{bmatrix}.   
+        \] This vector cannot be obtained by multiplying \(\begin{bmatrix}
+            3\\2
+        \end{bmatrix}\) by a real number, so \(\begin{bmatrix}
+            3\\2
+        \end{bmatrix}\) is not an eigenvector. 
+    \end{solution}
+    \item \(\begin{bmatrix}
+        3&0 \\ 8&-1 
+    \end{bmatrix}\) and \(\begin{bmatrix}
+        2\\4
+    \end{bmatrix}\).\begin{solution}
+        Multiplying the matrix by the vector gives us\[
+            \begin{bmatrix}
+                3&0 \\ 8&-1 
+            \end{bmatrix} \begin{bmatrix}
+                2\\4 
+            \end{bmatrix} = \begin{bmatrix}
+                6 \\ 12
+            \end{bmatrix} = 3\begin{bmatrix}
+                2\\4
+            \end{bmatrix}.   
+        \] Thus, \(\begin{bmatrix}
+            2\\4
+        \end{bmatrix}\) is an eigenvector of the matrix, with eigenvalue \(\lambda=3\). 
+    \end{solution}
+    \item \(\begin{bmatrix}
+        0&1&0 \\0&0&1 \\4&-17&8
+    \end{bmatrix}\) and \(\begin{bmatrix}
+        16\\4\\1
+    \end{bmatrix}\).\begin{solution}
+        Multiplying the matrix by the vector gives us\[
+            \begin{bmatrix}
+                0&1&0 \\ 0&0&1 \\ 4&-17&8
+            \end{bmatrix} \begin{bmatrix}
+                16\\4\\1
+            \end{bmatrix} = \begin{bmatrix}
+                4\\1\\4
+            \end{bmatrix}. 
+        \] This vector cannot be obtained by multiplying the original one by a real number, so it is not an eigenvector. 
+    \end{solution}
+    \item \(\begin{bmatrix}
+        0&1&0 \\0&0&1 \\4&-17&8
+    \end{bmatrix}\) and \(\begin{bmatrix}
+        2-\sqrt{3}\\1\\2+\sqrt{3}
+    \end{bmatrix}\).\begin{solution}
+        Multiplying the matrix by the vector gives us\[
+            \begin{bmatrix}
+                0&1&0 \\ 0&0&1 \\ 4&-17&8
+            \end{bmatrix} \begin{bmatrix}
+                2-\sqrt{3}\\1\\2+\sqrt{3}
+            \end{bmatrix} = \begin{bmatrix}
+                1\\2+\sqrt{3}\\7+4\sqrt{3}
+            \end{bmatrix} = \big(2+\sqrt{3}\big)\begin{bmatrix}
+                2-\sqrt{3}\\1\\2+\sqrt{3}
+            \end{bmatrix}.  
+        \] Thus, the vector is an eigenvector of the matrix, with eigenvalue \(\lambda=2+\sqrt{3}\) If you don't believe that \({\bigl(2+\sqrt{3}\bigr)}^2 = 7 + 4\sqrt{3}\), that's 
+        understandable, because like, where did that 7 come from? Expand it out yourself to verify. 
+    \end{solution}
+\end{enumerate}
+\pagebreak
+\begin{center}
+    \colorbox{CornflowerBlue!50}{
+        \begin{minipage}[c]{0.9\textwidth}
+            \centering
+            Find all \textit{real} eigenvalues of the following matrices. For each, describe the complete set of its corresponding eigenvectors. Also, determine which of the matrices can be diagonalized. 
+            If they can be diagonalized, diagonalize them. If they cannot be diagonalized, explain why. 
+        \end{minipage}
+    }\end{center}
+
+Before we proceed, I want to remark that \(\text{det}(\lambda I - A) = 0 \) is an equivalent statement to \(\text{det}(A - \lambda I) =0\). 
+\begin{enumerate}
+    \setcounter{enumi}{22}
+    \item \(\begin{bmatrix}
+        1&4\\2&3 
+    \end{bmatrix}\)\begin{solution}
+        We begin by setting up the characteristic equation. We can do this by subtracting a variable, \(\lambda\) from the diagonal and setting the determinant of the resultant matrix to be 0. Then,\[
+            \begin{vmatrix}
+                1 - \lambda 
+            \end{vmatrix}    
+        \]
+    \end{solution}
+    \item \(\begin{bmatrix}
+        1&2\\2&-1 
+    \end{bmatrix}\)
+    \item \(\begin{bmatrix}
+        3&5\\-1&-2 
+    \end{bmatrix}\)
+    \item \(\begin{bmatrix}
+        3&0&0\\-2&7&0\\4&8&1 
+    \end{bmatrix}\)
+    \item \(\begin{bmatrix}
+        9&-8&6&3\\0&-1&0&0\\0&0&3&0\\0&0&0&7 
+    \end{bmatrix}\)
+    \item \(\begin{bmatrix}
+        4&0&-1\\0&3&0\\1&0&2 
+    \end{bmatrix}\)
+    \item \(\begin{bmatrix}
+        3&1 \\ -1&5
+    \end{bmatrix}\)
+    \item \(\begin{bmatrix}
+        1&0&1\\0&1&1\\0&0&2 
+    \end{bmatrix}\)
+    \item \(\begin{bmatrix}
+        1&2&3\\0&0&-1\\0&1&0 
+    \end{bmatrix}\)
+\end{enumerate}
 
 \end{document}
