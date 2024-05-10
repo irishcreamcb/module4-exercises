@@ -18,6 +18,15 @@
 \author{emilianna louise abundo limlengco} 
 \date{\today} 
 
+\makeatletter % yoinked from https://tex.stackexchange.com/questions/14071/how-can-i-increase-the-line-spacing-in-a-matrix
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep%
+  \let\@ifnextchar\new@ifnextchar%
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+
 \fboxsep=4pt
 \RenewDocumentCommand{\footnoterule}{}{\vfill\kern-3pt \hrule width 0.4\columnwidth\kern2.6pt} %yoinked from LSE
 
@@ -124,7 +133,7 @@ eigenvalues. You'll see!}
                 3 & -1 \\ -2 & 5 
             \end{vmatrix} + 0 \begin{vmatrix}
                 3 & 99 \\ -2 & 99 
-            \end{vmatrix} = -6 \,(15 + 2) = -102. 
+            \end{vmatrix} = -6 \,(15 - 2) = -78. 
         \] You can notice that because of where these 99's and 0's are placed, it doesn't matter what row or column we pick; we're never going to have to multiply a 99 by something. Try it out for yourself and 
         pick a different option!
     \end{solution}
@@ -134,7 +143,33 @@ eigenvalues. You'll see!}
         0&0&1&0&0\\
         0&1&0&2&3\\
         0&4&0&5&6
-    \end{bmatrix}\)
+    \end{bmatrix}\)\begin{solution}
+        We pick the column/row with the most zeros (in this case the second row or first column) then use the cofactor expansion. I'm going to omit the terms 
+        that are being multiplied to 0 for my sanity.\begin{align*} 
+            \begin{vmatrix}
+                0&2&0&-1&0\\
+                -1&0&0&0&0\\
+                0&0&1&0&0\\
+                0&1&0&2&3\\
+                0&4&0&5&6
+            \end{vmatrix} &= 1 \begin{vmatrix}
+                2&0&-1&0 \\ 
+                0&1&0&0 \\ 
+                1&0&2&3 \\ 
+                4&0&5&6
+            \end{vmatrix} = 1 \begin{vmatrix}
+                2&-1&0 \\ 
+                1&2&3 \\ 
+                4&5&6 
+            \end{vmatrix} = 2 \begin{vmatrix}
+                2&3 \\ 5&6 
+            \end{vmatrix} + 1 \begin{vmatrix}
+                1&2 \\ 4&5 
+            \end{vmatrix} \\
+            &= 2\,(12 - 8) + 1\,(5-8) = 8 -3 = 5. 
+        \end{align*} The rows I picked in order were second row, then second row, then first row. If you're wondering why the sign changes at some points, remember the checkerboard
+        of \(+-+\) that defines the cofactors. 
+    \end{solution}
     \item \(\begin{bmatrix}
         1 &-1 &-1 &-1 &-1\\
         1 &2 &-1 &-1 &-1\\
@@ -168,7 +203,7 @@ eigenvalues. You'll see!}
     \item \(\begin{bmatrix}
         1-x & 1 & -1 \\ -1 & 2- x & 15 \\ 1 & -18 & 3 - x 
     \end{bmatrix}\)
-    \item For items \#6 to \#11, find all real values (or tuples of real values) of the given variable(s) that will make the determinant be equal to 0. 
+    \item For items \#6 to \#11, find all real values (or tuples of real values) of the given variable/s that will make the determinant be equal to 0. 
     \item Find the determinants of the three elementary ``column'' operations, that is\begin{enumerate}
         \item Swapping two columns
         \item Multiplying all elements in a column by \(k\)
@@ -279,7 +314,20 @@ watching 3B1B's video on it to see what eigenvectors really are, geometrically.}
         \end{minipage}
     }\end{center}
 
-Before we proceed, I want to remark that \(\text{det}(\lambda I - A) = 0 \) is an equivalent statement to \(\text{det}(A - \lambda I) =0\). 
+Before we proceed, I want to remark that \(\text{det}(\lambda I - A) = 0 \) is an equivalent statement to \(\text{det}(A - \lambda I) =0\). The handouts use \(\text{det}(\lambda I - A) = 0 \)
+but I prefer \(\text{det}(A - \lambda I) =0\). This is because the former requires you to negate the matrix, \textit{then} add \(\lambda\) to the diagonals, whereas
+the latter just requires you to subtract \(\lambda\) from the diagonals.\par 
+For instance, let \(A=\begin{bmatrix}
+    a&b \\ c&d
+\end{bmatrix}\). Then, \(
+    \lambda I - A = \begin{bmatrix}
+        \lambda - a & - b \\ - c & \lambda - d
+    \end{bmatrix}\) and \( A - \lambda I = \begin{bmatrix}
+        a - \lambda & b \\ c & d - \lambda
+    \end{bmatrix} 
+\).\par 
+Solving for both their determinants gives us \(\lambda^2 - ad\lambda + ad -bc\). 
+I don't know about you guys, but I like less negative signs rather than more. But regardless, you can use either. 
 \begin{enumerate}
     \setcounter{enumi}{22}
     \item \(\begin{bmatrix}
@@ -287,13 +335,96 @@ Before we proceed, I want to remark that \(\text{det}(\lambda I - A) = 0 \) is a
     \end{bmatrix}\)\begin{solution}
         We begin by setting up the characteristic equation. We can do this by subtracting a variable, \(\lambda\) from the diagonal and setting the determinant of the resultant matrix to be 0. Then,\[
             \begin{vmatrix}
-                1 - \lambda 
-            \end{vmatrix}    
-        \]
+                1 - \lambda & 4 \\ 2 & 3-\lambda 
+            \end{vmatrix}= (1-\lambda)\,(3-\lambda) - 8 = \lambda^2 - 4\lambda - 5 = (\lambda - 5)\,(\lambda + 1)\defeq 0 . 
+        \] This gives us \(\lambda_1 = 5\) and \(\lambda_2 = -1\). Solving for their respective eigenvectors,\begin{itemize}
+            \item For \(\lambda_1 = 5\), we need to solve \(\begin{bmatrix}
+                -4 & 4 \\ 2 & -2 
+            \end{bmatrix} \begin{bmatrix}
+                x \\ y
+            \end{bmatrix} = \begin{bmatrix}
+                0\\0
+            \end{bmatrix}\). Then, \(-4x + 4y = 0\), so \(x = y\).\par 
+            Thus, the set of eigenvectors with eigenvalue \(\lambda=5\) is \(\begin{Bmatrix}
+                \begin{bmatrix}
+                    t \\ t
+                \end{bmatrix} \Bigg|\, t \in \mathbb{R}
+            \end{Bmatrix}\). 
+            \item For \(\lambda_2 = -1\), we need to solve \(\begin{bmatrix}
+                2 & 4 \\ 2 & 4 
+            \end{bmatrix} \begin{bmatrix}
+                x \\ y
+            \end{bmatrix} = \begin{bmatrix}
+                0\\0
+            \end{bmatrix}\). Then, \(2x + 4y = 0\), so \(x = -2y\).\par 
+            Thus, the set of eigenvectors with eigenvalue \(\lambda=-1\) is \(\begin{Bmatrix}
+                \begin{bmatrix}
+                    -2t \\ t
+                \end{bmatrix} \Bigg|\, t \in \mathbb{R}
+            \end{Bmatrix}\).  
+        \end{itemize} For a matrix to be diagonalizable, the set of its eigenvectors must be linearly independent. Then, the diagonalization of \(A\) will be given by \(P D P^{-1}\), where \(P\) 
+        is a matrix with the eigenvectors of \(A\) as its columns, and \(D\) is a matrix with the eigenvalues of \(A\) along its diagonal, each one in the same column as its corresponding eigenvector.\par 
+        We can see that \(\begin{bmatrix}
+            1\\1
+        \end{bmatrix}\) is not a multiple of \(\begin{bmatrix}
+            -2\\1
+        \end{bmatrix}\), so the two vectors are linearly independent. This means our matrix is diagonalizable, and its diagonalization is given by \(\begin{bmatrix}
+            1&4 \\ 2&3
+        \end{bmatrix} = \dfrac{1}{3} \begin{bmatrix}
+            1 &-2 \\ 1 &1
+        \end{bmatrix}\begin{bmatrix}
+            5 &0 \\ 0&-1 
+        \end{bmatrix} \begin{bmatrix}
+            1 & 2 \\ -1 & 1 
+        \end{bmatrix}\). 
     \end{solution}
     \item \(\begin{bmatrix}
         1&2\\2&-1 
-    \end{bmatrix}\)
+    \end{bmatrix}\)\begin{solution}
+        We begin by setting up the characteristic equation. Then,\[
+            \begin{vmatrix}
+                1 - \lambda & 2 \\ 2 & -1-\lambda 
+            \end{vmatrix}= (1-\lambda)\,(-1-\lambda) - 4 = \lambda^2 - 5 = (\lambda - \sqrt{5})\,(\lambda + \sqrt{5})\defeq 0 .     
+        \] This gives us \(\lambda_1 = \sqrt{5}\) and \(\lambda_2 = -\sqrt{5}\). Solving for their respective eigenvectors,\begin{itemize}
+            \item For \(\lambda_1 = \sqrt{5}\), we need to solve for \(x\) and \(y\) in the equation \(\begin{bmatrix}
+                1-\sqrt{5} & 2 \\ 2 & -1-\sqrt{5} 
+            \end{bmatrix} \begin{bmatrix}
+                x \\ y
+            \end{bmatrix} = \begin{bmatrix}
+                0\\0
+            \end{bmatrix}\).\par Then, we have \(x(1-\sqrt{5}) + 2y = 0\), so \(x = \dfrac{-2y}{1-\sqrt{5}}\).\par 
+            Thus, the set of eigenvectors with eigenvalue \(\lambda=\sqrt{5}\) is \(\begin{Bmatrix}
+                \begin{bmatrix}[1.2]
+                    \frac{-2t}{1-\sqrt{5}} \\ t
+                \end{bmatrix} \Bigg|\, t \in \mathbb{R}
+            \end{Bmatrix}\). 
+            \item For \(\lambda_1 = -\sqrt{5}\), we need to solve for \(x\) and \(y\) in the equation \(\begin{bmatrix}
+                1+\sqrt{5} & 2 \\ 2 & -1+\sqrt{5} 
+            \end{bmatrix} \begin{bmatrix}
+                x \\ y
+            \end{bmatrix} = \begin{bmatrix}
+                0\\0
+            \end{bmatrix}\).\par Then, we have \(x(1+\sqrt{5}) + 2y = 0\), so \(x = \dfrac{-2y}{1+\sqrt{5}}\).\par 
+            Thus, the set of eigenvectors with eigenvalue \(\lambda=-\sqrt{5}\) is \(\begin{Bmatrix}
+                \begin{bmatrix}[1.2]
+                    \frac{-2t}{1+\sqrt{5}} \\ t
+                \end{bmatrix} \Bigg|\, t \in \mathbb{R}
+            \end{Bmatrix}\). 
+        \end{itemize} We can see that \(\begin{bmatrix}[1.2]
+            \frac{-2}{1-\sqrt{5}} \\ 1
+        \end{bmatrix}\) and \(\begin{bmatrix}[1.2]
+            \frac{-2}{1+\sqrt{5}} \\ 1
+        \end{bmatrix}\) are not multiples of each other, so the two vectors are linearly independent.\par 
+        Thus, its diagonalization is given by \(\begin{bmatrix}
+            1&2\\2&-1 
+        \end{bmatrix} = \dfrac{6}{-4\sqrt{5}} \begin{bmatrix}[1.2]
+            \frac{-2}{1-\sqrt{5}} & \frac{-2}{1+\sqrt{5}} \\ 1&1
+        \end{bmatrix}\begin{bmatrix}
+            \sqrt{5} &0 \\ 0 & -\sqrt{5} 
+        \end{bmatrix} \begin{bmatrix}[1.2]
+            1 & \frac{2}{1+\sqrt5} \\ -1 &\frac{-2}{1-\sqrt{5}}
+        \end{bmatrix}\). 
+    \end{solution}
     \item \(\begin{bmatrix}
         3&5\\-1&-2 
     \end{bmatrix}\)
