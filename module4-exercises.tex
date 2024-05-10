@@ -446,6 +446,56 @@ I don't know about you guys, but I like less negative signs rather than more. Bu
     \item \(\begin{bmatrix}
         1&2&3\\0&0&-1\\0&1&0 
     \end{bmatrix}\)
+    \item Let \(f_n\) be the \(n\)th entry of a second degree linear recurrence, where \(f_0 = s\) and \(f_1 = t \) are given constants. 
+    Then, for \(n \geq 2\), let \(f_n = af_{n-1} + bf_{n-2}\), where again, \(a\) and \(b\) are given constants. Symbolically,\[
+        f_n = \begin{cases}
+            s & n=0 \\ 
+            t & n=1 \\
+            af_{n-1} + bf_{n-2} & n\geq 2
+        \end{cases}. 
+    \]\begin{enumerate}
+        \item Let \(A = \begin{bmatrix}
+            a&b \\1 & 0
+        \end{bmatrix}\). Prove, by mathematical induction, that \(A^n \begin{bmatrix}
+            f_1 \\ f_0 
+        \end{bmatrix} = \begin{bmatrix}
+            f_{n+1} \\ f_n
+        \end{bmatrix}\).\begin{proof}
+            Let the inductive hypothesis be that \(A^n \begin{bmatrix}
+                f_1 \\ f_0 
+            \end{bmatrix} = \begin{bmatrix}
+                f_{n+1} \\ f_n
+            \end{bmatrix}\), for all \(n \in \mathbb{N}\).\par 
+            \textbf{Base Case.} When \(n=0\), \(
+                A^0 \begin{bmatrix}
+                    f_1 \\ f_0
+                \end{bmatrix} = \begin{bmatrix}
+                    1&0 \\ 0&1 
+                \end{bmatrix}  \begin{bmatrix}
+                    f_1 \\ f_0 
+                \end{bmatrix} = \begin{bmatrix}
+                    f_1 \\ f_0
+                \end{bmatrix}
+            \), which shows that it holds for the base case.\par
+            \textbf{Inductive Step.} Assume that the statement holds for some value \(n\). Then,\begin{align*}
+                A^{n+1} \begin{bmatrix}
+                    f_1 \\ f_0 
+                \end{bmatrix} &= A A^n \begin{bmatrix}
+                    f_1 \\ f_0 
+                \end{bmatrix} = A \begin{bmatrix}
+                    f_{n+1} \\ f_n 
+                \end{bmatrix} = \begin{bmatrix}
+                    a &b \\ 1 &0 
+                \end{bmatrix}\begin{bmatrix}
+                    f_{n+1} \\ f_n 
+                \end{bmatrix} = \begin{bmatrix}
+                    af_{n+1} + bf_n \\ f_{n+1}
+                \end{bmatrix} =\begin{bmatrix}
+                    f_{n+2} \\ f_{n+1}
+                \end{bmatrix},
+            \end{align*} which shows that the statement holds for the inductive step. 
+        \end{proof} 
+    \end{enumerate}
 \end{enumerate}
 
 \end{document}
